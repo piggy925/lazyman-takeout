@@ -1,4 +1,4 @@
-# buyme
+# lazyman-takeout
 
 ## Project setup
 ```
