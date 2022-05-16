@@ -138,7 +138,6 @@ export default {
   .position__notice {
     position: absolute;
     font-size: .21rem;
-    top: .09rem;
     right: 0;
   }
 }
