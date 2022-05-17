@@ -1,52 +1,39 @@
 <template>
   <div class="nearby">
     <h3 class="nearby__title">附近店铺</h3>
-    <div class="nearby__item"
-         v-for="item in nearbyList"
-         :key="item.id">
-      <img class="nearby__item__img" :src="item.imgUrl" />
-      <div class="nearby__content">
-        <div class="nearby__content__title">{{ item.title }}</div>
-        <div class="nearby__content__tags">
-          <span class="nearby__content__tag"
-                v-for="(innerItem, innerIndex) in item.tags"
-                :key="innerIndex">
-            {{ innerItem }}
-          </span>
-        </div>
-        <p class="nearby__content__highlight">
-          {{ item.desc }}
-        </p>
-      </div>
-    </div>
+    <ShopInfo v-for="item in nearbyList"
+              :key="item._id"
+              :item="item" />
   </div>
 </template>
 
 <script>
+import { ref } from 'vue';
+import { get } from '@/utils/request'
+import ShopInfo from '@/components/ShopInfo';
+
+const useNearbuListEffect = () => {
+  const nearbyList = ref([]);
+  const getNearbyList = async () => {
+    const result = await get('/api/shop/hot-list');
+    if (result?.errno === 0 && result?.data?.length > 0) {
+      nearbyList.value = result.data;
+    }
+  };
+
+  return {
+    nearbyList,
+    getNearbyList
+  }
+};
+
 export default {
   name: 'Nearby',
+  components: {ShopInfo},
   setup() {
-    const nearbyList = [
-      {
-        id: 1,
-        imgUrl: 'http://www.dell-lee.com/imgs/vue3/near.png',
-        title: '沃尔玛',
-        tags: ['月售1万+', '起送¥0', '基础运费¥5'],
-        desc: 'VIP尊享满89元减4元运费券（每月3张）'
-      }, {
-        id: 2,
-        imgUrl: 'http://www.dell-lee.com/imgs/vue3/near.png',
-        title: '沃尔玛',
-        tags: ['月售1万+', '起送¥0', '基础运费¥5'],
-        desc: 'VIP尊享满89元减4元运费券（每月3张）'
-      }, {
-        id: 3,
-        imgUrl: 'http://www.dell-lee.com/imgs/vue3/near.png',
-        title: '沃尔玛',
-        tags: ['月售1万+', '起送¥0', '基础运费¥5'],
-        desc: 'VIP尊享满89元减4元运费券（每月3张）'
-      }
-    ];
+    const {nearbyList, getNearbyList} = useNearbuListEffect();
+
+    getNearbyList();
 
     return {
       nearbyList
@@ -56,55 +43,5 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import "../../style/variable.scss";
 
-.nearby {
-  &__title {
-    margin: .16rem 0 .02rem 0;
-    font-size: .18rem;
-    font-weight: normal;
-    color: $content-fontcolor;
-  }
-
-  &__item {
-    display: flex;
-    padding-top: .12rem;
-
-    &__img {
-      margin-right: .16rem;
-      height: .56rem;
-      width: .56rem;
-    }
-  }
-
-  &__content {
-    flex: 1;
-    padding-bottom: .12rem;
-    border-bottom: 1px solid $content-bgColor;
-
-    &__title {
-      line-height: .22rem;
-      font-size: .16rem;
-      color: $content-fontcolor;
-    }
-
-    &__tags {
-      line-height: .18rem;
-      font-size: .13rem;
-      color: $content-fontcolor;
-      margin-top: .08rem;
-    }
-
-    &__tag {
-      margin-right: .16rem;
-    }
-
-    &__highlight {
-      line-height: .18rem;
-      font-size: .13rem;
-      color: #E93B3B;
-      margin: .08rem 0 0 0;
-    }
-  }
-}
 </style>
