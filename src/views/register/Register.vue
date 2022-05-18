@@ -36,7 +36,7 @@ const useRegisterEffect = (showToast) => {
       const loginUrl = '/api/user/register';
       const result = await post(loginUrl, data);
       if (result?.errno === 0) {
-        await router.push({name: 'Login'})
+        await router.push({ name: 'Login' })
       } else {
         showToast('注册失败');
       }
@@ -53,7 +53,7 @@ const useRegisterEffect = (showToast) => {
 
 const useLoginEffect = () => {
   const handleLoginClick = () => {
-    router.push({name: 'Login'});
+    router.push({ name: 'Login' });
   };
   return {
     handleLoginClick
@@ -62,11 +62,11 @@ const useLoginEffect = () => {
 
 export default {
   name: 'Register',
-  components: {Toast},
+  components: { Toast },
   setup() {
-    const {toastData, showToast} = useToastEffect();
-    const {data, handleRegisterClick} = useRegisterEffect(showToast);
-    const {handleLoginClick} = useLoginEffect();
+    const { toastData, showToast } = useToastEffect();
+    const { data, handleRegisterClick } = useRegisterEffect(showToast);
+    const { handleLoginClick } = useLoginEffect();
 
     return {
       data,
@@ -99,7 +99,7 @@ export default {
   &__input {
     height: .48rem;
     margin: 0 .4rem .16rem .4rem;
-    background: #F9F9F9;
+    background: $input-bgColor;
     border: 1px solid rgba(0, 0, 0, 0.10);
     border-radius: 6px;
     padding: 0 .16rem;
@@ -123,10 +123,10 @@ export default {
     margin: .32rem .4rem .16rem .4rem;
     text-align: center;
     line-height: .48rem;
-    background: #0091FF;
+    background: $default-btnColor;
     box-shadow: 0 .04rem .08rem 0 rgba(0, 145, 255, 0.32);
     border-radius: .04rem;
-    color: #FFFFFF;
+    color: $default-fontColor;
     font-size: .16rem;
   }
 
@@ -134,8 +134,6 @@ export default {
     text-align: center;
     color: $content-notice-fontcolor;
     font-size: .16rem;
-
   }
-
 }
 </style>

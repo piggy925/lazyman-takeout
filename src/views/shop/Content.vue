@@ -18,6 +18,11 @@
           <span class="product__item__yen">&yen;33.6</span>
           <span class="product__item__origin">&yen;39.6</span>
         </p>
+        <div class="product__count">
+          <span class="product__count__minus">-</span>
+          0
+          <span class="product__count__plus">+</span>
+        </div>
       </div>
     </div>
   </div>
@@ -32,6 +37,7 @@ export default {
 
 <style lang="scss" scoped>
 @import "../../style/variable";
+@import "../../style/mixins";
 
 .content {
   position: absolute;
@@ -55,7 +61,7 @@ export default {
     color: $content-fontcolor;
 
     &--active {
-      background: #FFFFFF;
+      background: $bgColor;
     }
   }
 }
@@ -65,6 +71,7 @@ export default {
   overflow-y: scroll;
 
   &__item {
+    position: relative;
     display: flex;
     padding: .12rem 0;
     margin: 0 .16rem;
@@ -76,11 +83,16 @@ export default {
       margin-right: .16rem;
     }
 
+    &__detail {
+      overflow: hidden;
+    }
+
     &__title {
       margin: 0;
       font-size: .14rem;
       color: $content-fontcolor;
       line-height: .2rem;
+      @include ellipsis;
     }
 
     &__sales {
@@ -91,20 +103,49 @@ export default {
     }
 
     &__price {
-      margin: .06rem 0;
       line-height: .14rem;
-      color: #E93B3B;
+      color: $highlight-fontColor;
+      margin: 0.06rem 0 0 0;
     }
 
     &__yen {
-      font-size: .14rem;
+      font-size: .12rem;
       margin-right: .06rem;
     }
 
     &__origin {
-      font-size: .1rem;
       color: #999;
+      line-height: .2rem;
+      font-size: .12rem;
       text-decoration: line-through;
+    }
+  }
+
+  &__count {
+    position: absolute;
+    right: .18rem;
+    bottom: .12rem;
+
+    &__minus, &__plus {
+      display: inline-block;
+      width: .2rem;
+      height: .2rem;
+      text-align: center;
+      border-radius: 50%;
+      font-size: .2rem;
+      line-height: .16rem;
+      color: #666
+    }
+
+    &__minus {
+      border: .01rem solid #666;
+      margin-right: .05rem;
+    }
+
+    &__plus {
+      background: $default-btnColor;
+      color: $default-fontColor;
+      margin-left: .05rem;
     }
   }
 }
