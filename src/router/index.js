@@ -10,15 +10,15 @@ const routes = [
     name: 'Login',
     component: () => import(/* webpackChunkName: "login" */'../views/login/Login'),
     beforeEnter(to, from, next) {
-      const {isLogin} = localStorage;
-      isLogin ? next({name: 'Home'}) : next();
+      const { isLogin } = localStorage;
+      isLogin ? next({ name: 'Home' }) : next();
     }
   }, {
     path: '/register',
     name: 'Register',
     component: () => import(/* webpackChunkName: "register" */'../views/register/Register'),
   }, {
-    path: '/shop',
+    path: '/shop/:id',
     name: 'Shop',
     component: () => import(/* webpackChunkName: "shop" */'../views/shop/Shop'),
   }
@@ -31,9 +31,9 @@ const router = createRouter({
 
 router.beforeEach((to, from, next) => {
   const isLogin = localStorage.isLogin;
-  const {name} = to;
+  const { name } = to;
   const isRegisterOrLogin = (name === 'Login' || name === 'Register');
-  (isLogin || isRegisterOrLogin) ? next() : next({name: 'Login'});
+  (isLogin || isRegisterOrLogin) ? next() : next({ name: 'Login' });
 })
 
 export default router

@@ -26,13 +26,6 @@ export default {
 @import "../style/variable.scss";
 
 .shop {
-  &__title {
-    margin: .16rem 0 .02rem 0;
-    font-size: .18rem;
-    font-weight: normal;
-    color: $content-fontcolor;
-  }
-
   &__item {
     display: flex;
     padding-top: .12rem;

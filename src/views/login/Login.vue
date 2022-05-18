@@ -33,7 +33,7 @@ const useLoginEffect = (showToast) => {
       const result = await post(loginUrl, data);
       if (result?.errno === 0) {
         localStorage.isLogin = true;
-        await router.push({name: 'Home'})
+        await router.push({ name: 'Home' })
       } else {
         showToast('登录失败');
       }
@@ -50,7 +50,7 @@ const useLoginEffect = (showToast) => {
 
 const useRegisterEffect = () => {
   const handleClickRegister = () => {
-    router.push({name: 'Register'});
+    router.push({ name: 'Register' });
   };
   return {
     handleClickRegister
@@ -63,9 +63,9 @@ export default {
     Toast
   },
   setup() {
-    const {toastData, showToast} = useToastEffect();
-    const {data, handleLogin} = useLoginEffect(showToast);
-    const {handleClickRegister} = useRegisterEffect();
+    const { toastData, showToast } = useToastEffect();
+    const { data, handleLogin } = useLoginEffect(showToast);
+    const { handleClickRegister } = useRegisterEffect();
 
     return {
       data,
@@ -133,7 +133,6 @@ export default {
     text-align: center;
     color: $content-notice-fontcolor;
     font-size: .16rem;
-
   }
 
 }
