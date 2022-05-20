@@ -4,10 +4,10 @@
       <div class="check__icon">
         <img class="check__icon__img"
              src="http://www.dell-lee.com/imgs/vue3/basket.png" />
-        <div class="check__icon__tag">1</div>
+        <div class="check__icon__tag">{{ total }}</div>
       </div>
       <div class="check__info">
-        总计: <span class="check__info__price">&yen;128</span>
+        总计: <span class="check__info__price">&yen;{{ price }}</span>
       </div>
       <div class="check__btn">去结算</div>
     </div>
@@ -15,8 +15,49 @@
 </template>
 
 <script>
+import { useStore } from 'vuex';
+import { computed } from 'vue';
+import { useRoute } from 'vue-router';
+
+const useCartEffect = () => {
+  const route = useRoute()
+  const store = useStore();
+  const shopId = route.params.id;
+  const cartList = store.state.cartList;
+  const total = computed(() => {
+    let count = 0;
+    const productList = cartList[shopId];
+    if (productList) {
+      for (let i in productList) {
+        const product = productList[i];
+        count += product.count;
+      }
+    }
+    return count;
+  });
+
+  const price = computed(() => {
+    let count = 0;
+    const productList = cartList[shopId];
+    if (productList) {
+      for (let i in productList) {
+        const product = productList[i];
+        count += (product.count * product.price);
+      }
+    }
+    return count.toFixed(2);
+  });
+  return {
+    total, price
+  };
+};
+
 export default {
-  name: 'Cart'
+  name: 'Cart',
+  setup() {
+    const { total, price } = useCartEffect();
+    return { total, price };
+  }
 }
 </script>
 
@@ -50,7 +91,7 @@ export default {
     &__tag {
       position: absolute;
       height: .2rem;
-      width: .2rem;
+      min-width: .2rem;
       border-radius: 50%;
       background-color: $highlight-fontColor;
       font-size: .1rem;
@@ -58,8 +99,10 @@ export default {
       text-align: center;
       color: $default-fontColor;
       top: .04rem;
-      right: .18rem;
+      left: .5rem;
       transform: scale(.5);
+      transform-origin: left center;
+      padding: .01rem .01rem;
     }
   }
 

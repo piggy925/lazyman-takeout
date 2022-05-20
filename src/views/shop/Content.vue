@@ -19,9 +19,13 @@
           <span class="product__item__origin">&yen;{{ item.oldPrice }}</span>
         </p>
         <div class="product__count">
-          <span class="product__count__minus">-</span>
-          0
-          <span class="product__count__plus">+</span>
+          <span class="product__count__minus"
+                @click="changeCartItem(shopId, item._id, item, -1)">-</span>
+          <span class="product__count__num">
+            {{ cartList?.[shopId]?.[item._id]?.count || 0 }}
+          </span>
+          <span class="product__count__plus"
+                @click="changeCartItem(shopId, item._id, item, 1)">+</span>
         </div>
       </div>
     </div>
@@ -33,6 +37,7 @@
 import { reactive, ref, toRefs, watchEffect } from 'vue';
 import { get } from '@/utils/request';
 import { useRoute } from 'vue-router';
+import { useStore } from 'vuex';
 
 const categories = [{
   name: '全部商品',
@@ -56,9 +61,7 @@ const useTabEffect = () => {
 }
 
 // 加载当前商品列表
-const useCurrentListEffect = (currentTab) => {
-  const route = useRoute();
-  const shopId = route.params.id;
+const useCurrentListEffect = (currentTab, shopId) => {
   const content = reactive({ list: [] });
 
   const getContentData = async () => {
@@ -76,15 +79,30 @@ const useCurrentListEffect = (currentTab) => {
   return { getContentData, list }
 };
 
+const useCartEffect = () => {
+  const store = useStore();
+  const { cartList } = toRefs(store.state);
+  const changeCartItem = (shopId, productId, productInfo, number) => {
+    store.commit('changeCartItem', { shopId, productId, productInfo, number });
+  };
+
+  return {
+    cartList,
+    changeCartItem,
+  };
+};
+
 export default {
   name: 'Content',
   setup() {
+    const route = useRoute();
+    const shopId = route.params.id;
     const { currentTab, handleTabClick } = useTabEffect();
-    const { list } = useCurrentListEffect(currentTab);
-
+    const { list } = useCurrentListEffect(currentTab, shopId);
+    const { cartList, changeCartItem } = useCartEffect(shopId);
     return {
-      list, categories, currentTab,
-      handleTabClick
+      list, categories, currentTab, cartList, shopId,
+      handleTabClick, changeCartItem,
     };
   },
 }
@@ -180,6 +198,13 @@ export default {
     position: absolute;
     right: .18rem;
     bottom: .12rem;
+
+    &__num {
+      display: inline-block;
+      width: .18rem;
+      text-align: center;
+    }
+
 
     &__minus, &__plus {
       display: inline-block;
