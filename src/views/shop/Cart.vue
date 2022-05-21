@@ -1,5 +1,5 @@
 <template>
-  <div class="mask" v-if="showCart"></div>
+  <div class="mask" v-if="showCart" @click="handleShowCartChange "></div>
   <div class="cart">
     <div class="products" v-if="showCart">
       <div class="product">
@@ -10,7 +10,10 @@
                   @click="setCartItemsChecked(shopId, allChecked)">&#xe68e;</span>
             全选
           </div>
-          <div class="product__header__clear" @click="clearCartProducts(shopId)">清空购物车</div>
+          <div class="product__header__clear">
+            <span class="product__header__clear__btn"
+                  @click="clearCartProducts(shopId)">清空购物车</span>
+          </div>
         </div>
         <template v-for="(item, index) in productList" :key="index">
           <div class="product__item" v-if="item.count > 0">
@@ -190,6 +193,7 @@ export default {
 
     &__icon {
       font-size: .2rem;
+      vertical-align: top;
 
       &--select {
         color: #1FA4FC;;
@@ -200,6 +204,10 @@ export default {
       flex: 1;
       text-align: right;
       margin-right: .18rem;
+
+      &__btn {
+        display: inline-block;
+      }
     }
   }
 
@@ -259,14 +267,13 @@ export default {
   &__count {
     position: absolute;
     right: .18rem;
-    bottom: .12rem;
+    bottom: .26rem;
 
     &__num {
       display: inline-block;
       width: .18rem;
       text-align: center;
     }
-
 
     &__minus, &__plus {
       display: inline-block;
