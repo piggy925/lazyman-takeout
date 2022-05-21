@@ -8,7 +8,7 @@
         </div>
       </div>
       <ShopInfo :item="data.item" :hideBorder="true" v-if="data.item.imgUrl" />
-      <Content />
+      <Content :shopName="data.item.name" />
       <Cart />
   </div>
 </template>

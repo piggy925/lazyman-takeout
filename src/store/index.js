@@ -13,8 +13,8 @@ export default createStore({
         productInfo,
         number
       } = payload;
-      let shopInfo = this.state.cartList[shopId] || {};
-      let product = shopInfo[productId];
+      let shopInfo = this.state.cartList[shopId] || { shopName: '', productList: {} };
+      let product = shopInfo.productList[productId];
       if (!product) {
         product = productInfo;
         product.count = 0;
@@ -26,28 +26,37 @@ export default createStore({
       if (product.count < 0) {
         product.count = 0;
       }
-      shopInfo[productId] = product;
+      shopInfo.productList[productId] = product;
       this.state.cartList[shopId] = shopInfo;
     },
 
     changeCartItemChecked(store, payload) {
       const { shopId, productId } = payload;
-      let product = store.cartList[shopId][productId];
+      let product = store.cartList[shopId].productList[productId];
       product.check = !product.check;
     },
 
     clearCartProducts(store, payload) {
       const { shopId } = payload;
-      store.cartList[shopId] = {};
+      store.cartList[shopId].productList = {};
     },
 
     setCartItemsChecked(store, payload) {
       const { shopId, allChecked } = payload;
-      const productList = store.cartList[shopId];
+      const productList = store.cartList[shopId].productList;
       for (let i in productList) {
         const product = productList[i];
         product.check = !allChecked;
       }
+    },
+    changeShopName(store, payload) {
+      const {
+        shopId,
+        shopName
+      } = payload;
+      const shopInfo = this.state.cartList[shopId] || { shopName: '', productList: {} };
+      shopInfo.shopName = shopName;
+      this.state.cartList[shopId] = shopInfo;
     },
   },
   actions: {},
