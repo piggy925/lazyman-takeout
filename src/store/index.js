@@ -1,12 +1,25 @@
 import { createStore } from 'vuex'
 
+const setLocalCartList = (state) => {
+  const { cartList } = state;
+  localStorage.cartList = JSON.stringify(cartList);
+};
+
+const getLocalCartList = () => {
+  try {
+    return JSON.parse(localStorage.cartList);
+  } catch (e) {
+    return {}
+  }
+};
+
 export default createStore({
   state: {
-    cartList: {}
+    cartList: getLocalCartList()
   },
   getters: {},
   mutations: {
-    changeCartItem(store, payload) {
+    changeCartItem(state, payload) {
       const {
         shopId,
         productId,
@@ -27,36 +40,41 @@ export default createStore({
         product.count = 0;
       }
       shopInfo.productList[productId] = product;
-      this.state.cartList[shopId] = shopInfo;
+      state.cartList[shopId] = shopInfo;
+      setLocalCartList(state);
     },
 
-    changeCartItemChecked(store, payload) {
+    changeCartItemChecked(state, payload) {
       const { shopId, productId } = payload;
-      let product = store.cartList[shopId].productList[productId];
+      let product = state.cartList[shopId].productList[productId];
       product.check = !product.check;
+      setLocalCartList(state);
     },
 
-    clearCartProducts(store, payload) {
+    clearCartProducts(state, payload) {
       const { shopId } = payload;
-      store.cartList[shopId].productList = {};
+      state.cartList[shopId].productList = {};
+      setLocalCartList(state);
     },
 
-    setCartItemsChecked(store, payload) {
+    setCartItemsChecked(state, payload) {
       const { shopId, allChecked } = payload;
-      const productList = store.cartList[shopId].productList;
+      const productList = state.cartList[shopId].productList;
       for (let i in productList) {
         const product = productList[i];
         product.check = !allChecked;
       }
+      setLocalCartList(state);
     },
-    changeShopName(store, payload) {
+    changeShopName(state, payload) {
       const {
         shopId,
         shopName
       } = payload;
       const shopInfo = this.state.cartList[shopId] || { shopName: '', productList: {} };
       shopInfo.shopName = shopName;
-      this.state.cartList[shopId] = shopInfo;
+      state.cartList[shopId] = shopInfo;
+      setLocalCartList(state);
     },
   },
   actions: {},
