@@ -1,13 +1,14 @@
 <template>
-  <div class="mask" v-if="showCart" @click="handleShowCartChange "></div>
+  <div class="mask" v-if="showCart && calculations.total > 0"
+       @click="handleShowCartChange "></div>
   <div class="cart">
-    <div class="products" v-if="showCart">
+    <div class="products" v-if="showCart && calculations.total > 0">
       <div class="product">
         <div class="product__header">
           <div class="product__header__all">
             <span class="product__header__icon iconfont"
-                  :class="{'product__header__icon--select': allChecked}"
-                  @click="setCartItemsChecked(shopId, allChecked)">&#xe68e;</span>
+                  :class="{'product__header__icon--select': calculations.allChecked}"
+                  @click="setCartItemsChecked(shopId, calculations.allChecked)">&#xe68e;</span>
             全选
           </div>
           <div class="product__header__clear">
@@ -46,10 +47,10 @@
         <img class="check__icon__img"
              src="http://www.dell-lee.com/imgs/vue3/basket.png"
              @click="handleShowCartChange" />
-        <div class="check__icon__tag">{{ total }}</div>
+        <div class="check__icon__tag">{{ calculations.total }}</div>
       </div>
       <div class="check__info">
-        总计: <span class="check__info__price">&yen;{{ price }}</span>
+        总计: <span class="check__info__price">&yen;{{ calculations.price }}</span>
       </div>
       <div class="check__btn">去结算</div>
     </div>
@@ -66,34 +67,26 @@ const useCartEffect = () => {
   const route = useRoute()
   const store = useStore();
   const shopId = route.params.id;
-  const cartList = store.state.cartList;
-  const { changeCartItem } = useCommonCartEffect();
+  const { cartList, changeCartItem } = useCommonCartEffect();
   const showCart = ref(false);
 
-  const total = computed(() => {
-    let count = 0;
+  const calculations = computed(() => {
+    const result = { total: 0, price: 0, allChecked: true };
     const productList = cartList[shopId]?.productList;
     if (productList) {
       for (let i in productList) {
         const product = productList[i];
-        count += product.count;
-      }
-    }
-    return count;
-  });
-
-  const price = computed(() => {
-    let count = 0;
-    const productList = cartList[shopId]?.productList;
-    if (productList) {
-      for (let i in productList) {
-        const product = productList[i];
+        result.total += product.count;
         if (product.check) {
-          count += (product.count * product.price);
+          result.price += (product.count * product.price);
+        }
+        if (product.count > 0 && !product.check) {
+          result.allChecked = false;
         }
       }
     }
-    return count.toFixed(2);
+    result.price = result.price.toFixed(2);
+    return result;
   });
 
   const productList = computed(() => {
@@ -109,21 +102,6 @@ const useCartEffect = () => {
     store.commit('clearCartProducts', { shopId });
   };
 
-  const allChecked = computed(() => {
-    const productList = store.state.cartList[shopId]?.productList;
-    let result = true;
-    if (productList) {
-      for (let i in productList) {
-        const product = productList[i];
-        if (product.count > 0 && !product.check) {
-          result = false;
-          break;
-        }
-      }
-    }
-    return result;
-  });
-
   const setCartItemsChecked = (shopId, allChecked) => {
     store.commit('setCartItemsChecked', { shopId, allChecked })
   };
@@ -133,7 +111,7 @@ const useCartEffect = () => {
   };
 
   return {
-    total, price, productList, shopId, allChecked, showCart,
+    productList, shopId, showCart, calculations,
     changeCartItem, changeCartItemChecked, clearCartProducts, setCartItemsChecked, handleShowCartChange
   };
 };
@@ -142,11 +120,12 @@ export default {
   name: 'Cart',
   setup() {
     const {
-      total, price, productList, shopId, allChecked, showCart,
+      productList, shopId, showCart, calculations,
       changeCartItem, changeCartItemChecked, clearCartProducts, setCartItemsChecked, handleShowCartChange
     } = useCartEffect();
+
     return {
-      total, price, productList, shopId, allChecked, showCart,
+      productList, shopId, showCart, calculations,
       changeCartItem, changeCartItemChecked, clearCartProducts, setCartItemsChecked, handleShowCartChange
     };
   }

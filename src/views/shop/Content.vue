@@ -22,7 +22,7 @@
           <span class="product__count__minus"
                 @click="changeCartInfo(shopId, item._id, item, -1, shopName)">-</span>
           <span class="product__count__num">
-            {{ cartList?.[shopId]?.productList?.[item._id]?.count || 0 }}
+            {{ getCartProductCount(shopId, item._id) }}
           </span>
           <span class="product__count__plus"
                 @click="changeCartInfo(shopId, item._id, item, 1, shopName)">+</span>
@@ -80,29 +80,39 @@ const useCurrentListEffect = (currentTab, shopId) => {
   return { getContentData, list }
 };
 
+const useCartEffect = () => {
+  const store = useStore();
+  const { cartList, changeCartItem } = useCommonCartEffect();
+
+  const changeShopName = (shopId, shopName) => {
+    store.commit('changeShopName', { shopId, shopName })
+  };
+
+  const changeCartInfo = (shopId, productId, productInfo, number, shopName) => {
+    changeCartItem(shopId, productId, productInfo, number);
+    changeShopName(shopId, shopName);
+  };
+
+  const getCartProductCount = (shopId, productId) => {
+    return cartList?.[shopId]?.productList?.[productId]?.count || 0;
+  };
+
+  return { cartList, changeCartInfo, getCartProductCount };
+};
+
 export default {
   name: 'Content',
   props: ['shopName'],
   setup() {
-    const store = useStore();
     const route = useRoute();
     const shopId = route.params.id;
     const { currentTab, handleTabClick } = useTabEffect();
     const { list } = useCurrentListEffect(currentTab, shopId);
-    const { cartList, changeCartItem } = useCommonCartEffect();
-
-    const changeShopName = (shopId, shopName) => {
-      store.commit('changeShopName', { shopId, shopName })
-    };
-
-    const changeCartInfo = (shopId, productId, productInfo, number, shopName) => {
-      changeCartItem(shopId, productId, productInfo, number);
-      changeShopName(shopId, shopName);
-    };
+    const { cartList, changeCartInfo, getCartProductCount } = useCartEffect();
 
     return {
       list, categories, currentTab, shopId, cartList,
-      handleTabClick, changeCartInfo,
+      handleTabClick, changeCartInfo, getCartProductCount
     };
   },
 }
