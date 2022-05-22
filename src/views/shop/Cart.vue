@@ -52,7 +52,9 @@
       <div class="check__info">
         总计: <span class="check__info__price">&yen;{{ calculations.price }}</span>
       </div>
-      <div class="check__btn">去结算</div>
+      <router-link :to="{path: `/orderConfirmation/${shopId}`}">
+        <div class="check__btn">去结算</div>
+      </router-link>
     </div>
   </div>
 </template>
@@ -324,11 +326,15 @@ export default {
     }
   }
 
+  a {
+    color: $default-fontColor;
+    text-decoration: none;
+  }
+
   &__btn {
     width: .98rem;
     text-align: center;
     font-size: 14px;
-    color: $default-fontColor;
     background: #4FB0F9;
   }
 }
