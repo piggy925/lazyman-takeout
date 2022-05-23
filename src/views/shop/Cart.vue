@@ -61,39 +61,16 @@
 
 <script>
 import { useStore } from 'vuex';
-import { computed, ref } from 'vue';
+import { ref } from 'vue';
 import { useRoute } from 'vue-router';
-import { useCommonCartEffect } from '@/views/shop/useCommonCartEffect';
+import { useCommonCartEffect } from '@/effects/cartEffects';
 
 const useCartEffect = () => {
   const route = useRoute()
   const store = useStore();
   const shopId = route.params.id;
-  const { cartList, changeCartItem } = useCommonCartEffect();
+  const { productList, calculations, changeCartItem } = useCommonCartEffect(shopId);
   const showCart = ref(false);
-
-  const calculations = computed(() => {
-    const result = { total: 0, price: 0, allChecked: true };
-    const productList = cartList[shopId]?.productList;
-    if (productList) {
-      for (let i in productList) {
-        const product = productList[i];
-        result.total += product.count;
-        if (product.check) {
-          result.price += (product.count * product.price);
-        }
-        if (product.count > 0 && !product.check) {
-          result.allChecked = false;
-        }
-      }
-    }
-    result.price = result.price.toFixed(2);
-    return result;
-  });
-
-  const productList = computed(() => {
-    return cartList[shopId]?.productList || [];
-  });
 
   const changeCartItemChecked = (shopId, productId) => {
     store.commit('changeCartItemChecked', { shopId, productId });
@@ -334,7 +311,7 @@ export default {
   &__btn {
     width: .98rem;
     text-align: center;
-    font-size: 14px;
+    font-size: .14rem;
     background: #4FB0F9;
   }
 }
