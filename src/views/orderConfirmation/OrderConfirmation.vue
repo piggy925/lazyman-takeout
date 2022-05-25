@@ -2,7 +2,9 @@
 <div class="wrapper">
   <div class="top">
     <div class="top__header">
-      <div class="top__header__back iconfont">&#xe697;</div>
+      <div class="top__header__back iconfont"
+           @click="handleBackClick">&#xe697;
+      </div>
       确认订单
     </div>
     <div class="top__receiver">
@@ -18,18 +20,22 @@
   <div class="products">
     <div class="products__title">{{ shopName }}</div>
     <div class="products__list">
-      <div class="products__item"
-           v-for="(item, index) in productList"
-           :key="index">
-        <img class="products__item__img" :src="item.imgUrl">
-        <div class="products__item__detail">
-          <h4 class="products__item__title">{{ item.name }}</h4>
-          <p class="products__item__price">
-            <span class="products__item__yen">&yen;{{ item.price }} x {{ item.count }}</span>
-            <span class="products__item__total">&yen;{{ (item.price * item.count).toFixed(2) }}</span>
-          </p>
+      <template
+          v-for="(item, index) in productList"
+          :key="index">
+        <div class="products__item"
+             v-if="item.count > 0"
+        >
+          <img class="products__item__img" :src="item.imgUrl">
+          <div class="products__item__detail">
+            <h4 class="products__item__title">{{ item.name }}</h4>
+            <p class="products__item__price">
+              <span class="products__item__yen">&yen;{{ item.price }} x {{ item.count }}</span>
+              <span class="products__item__total">&yen;{{ (item.price * item.count).toFixed(2) }}</span>
+            </p>
+          </div>
         </div>
-      </div>
+      </template>
     </div>
   </div>
   <div class="order">
@@ -41,17 +47,22 @@
 
 <script>
 import { useCommonCartEffect } from '@/effects/cartEffects';
-import { useRoute } from 'vue-router';
+import { useRoute, useRouter } from 'vue-router';
 
 export default {
   name: 'OrderConfirmation',
   setup() {
     const route = useRoute();
+    const router = useRouter();
     const shopId = route.params.id;
     const { productList, shopName, calculations } = useCommonCartEffect(shopId);
 
+    const handleBackClick = () => {
+      router.back();
+    };
     return {
-      productList, shopName, calculations
+      productList, shopName, calculations,
+      handleBackClick
     }
   }
 }
@@ -66,8 +77,9 @@ export default {
   top: 0;
   right: 0;
   left: 0;
-  bottom: 0;
+  bottom: .49rem;
   background-color: #f8f8f8;
+  overflow-y: scroll;
 }
 
 .top {
@@ -212,7 +224,7 @@ export default {
   line-height: .49rem;
   width: 100%;
   background-color: $bgColor;
-  position: absolute;
+  position: fixed;
   left: 0;
   right: 0;
   bottom: 0;

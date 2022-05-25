@@ -40,7 +40,7 @@
             </div>
         </div>
         </template>
-  </div>
+      </div>
     </div>
     <div class="check">
       <div class="check__icon">
@@ -52,11 +52,9 @@
       <div class="check__info">
         总计: <span class="check__info__price">&yen;{{ calculations.price }}</span>
       </div>
-      <router-link :to="{path: `/orderConfirmation/${shopId}`}">
-        <div class="check__btn">去结算</div>
-      </router-link>
+      <div class="check__btn" @click="handleCheckClick">去结算</div>
+      </div>
     </div>
-  </div>
 </template>
 
 <script>
@@ -64,6 +62,7 @@ import { useStore } from 'vuex';
 import { ref } from 'vue';
 import { useRoute } from 'vue-router';
 import { useCommonCartEffect } from '@/effects/cartEffects';
+import router from '@/router';
 
 const useCartEffect = () => {
   const route = useRoute()
@@ -89,9 +88,25 @@ const useCartEffect = () => {
     showCart.value = !showCart.value;
   };
 
+  const handleCheckClick = () => {
+    if (calculations.value.total > 0) {
+      router.push({
+        path: `/orderConfirmation/${shopId}`
+      })
+    }
+  };
+
   return {
-    productList, shopId, showCart, calculations,
-    changeCartItem, changeCartItemChecked, clearCartProducts, setCartItemsChecked, handleShowCartChange
+    productList,
+    shopId,
+    showCart,
+    calculations,
+    changeCartItem,
+    changeCartItemChecked,
+    clearCartProducts,
+    setCartItemsChecked,
+    handleShowCartChange,
+    handleCheckClick
   };
 };
 
@@ -99,13 +114,29 @@ export default {
   name: 'Cart',
   setup() {
     const {
-      productList, shopId, showCart, calculations,
-      changeCartItem, changeCartItemChecked, clearCartProducts, setCartItemsChecked, handleShowCartChange
+      productList,
+      shopId,
+      showCart,
+      calculations,
+      changeCartItem,
+      changeCartItemChecked,
+      clearCartProducts,
+      setCartItemsChecked,
+      handleShowCartChange,
+      handleCheckClick
     } = useCartEffect();
 
     return {
-      productList, shopId, showCart, calculations,
-      changeCartItem, changeCartItemChecked, clearCartProducts, setCartItemsChecked, handleShowCartChange
+      productList,
+      shopId,
+      showCart,
+      calculations,
+      changeCartItem,
+      changeCartItemChecked,
+      clearCartProducts,
+      setCartItemsChecked,
+      handleShowCartChange,
+      handleCheckClick
     };
   }
 }
@@ -303,16 +334,12 @@ export default {
     }
   }
 
-  a {
-    color: $default-fontColor;
-    text-decoration: none;
-  }
-
   &__btn {
     width: .98rem;
     text-align: center;
     font-size: .14rem;
     background: #4FB0F9;
+    color: $default-fontColor;
   }
 }
 </style>
