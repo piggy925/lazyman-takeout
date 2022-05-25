@@ -338,7 +338,7 @@ export default {
     width: .98rem;
     text-align: center;
     font-size: .14rem;
-    background: #4FB0F9;
+    background: $check-btnColor;
     color: $default-fontColor;
   }
 }
