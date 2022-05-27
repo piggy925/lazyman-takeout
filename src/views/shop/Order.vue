@@ -3,6 +3,16 @@
     <div class="order__price">实付金额 <b>¥{{ calculations.price }}</b></div>
     <div class="order__btn">提交订单</div>
   </div>
+  <div class="mask">
+    <div class="mask__content">
+      <h3 class="mask__content__title">确认前往支付？</h3>
+      <p class="mask__content__desc">请尽快完成支付，否则将被取消</p>
+      <div class="mask__content__btns">
+        <div class="mask__content__btnCancel">取消订单</div>
+        <div class="mask__content__btnConfirm">确认支付</div>
+      </div>
+    </div>
+  </div>
 </template>
 
 <script>
@@ -30,7 +40,6 @@ export default {
   display: flex;
   height: .49rem;
   line-height: .49rem;
-  width: 100%;
   background-color: $bgColor;
   position: fixed;
   left: 0;
@@ -50,6 +59,70 @@ export default {
     font-size: .14rem;
     background: $check-btnColor;
     color: $default-fontColor;
+  }
+}
+
+.mask {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.50);
+  z-index: 1;
+
+  &__content {
+    position: absolute;
+    background: $default-fontColor;
+    border-radius: .04rem;
+    width: 3rem;
+    height: 1.6rem;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+
+    &__title {
+      font-size: .18rem;
+      color: $content-fontcolor;
+      line-height: .25rem;
+      text-align: center;
+      margin: .24rem 0 .08rem 0;
+    }
+
+    &__desc {
+      font-size: .14rem;
+      color: $cart-info-fontColor;
+      line-height: .2rem;
+      margin: 0 0 .24rem 0;
+      text-align: center;
+    }
+
+    &__btns {
+      display: flex;
+      height: .32rem;
+    }
+
+    &__btnCancel, &__btnConfirm {
+      flex: 1;
+      border: 1px solid #4FB0F9;
+      border-radius: .16rem;
+      width: .8rem;
+      line-height: .3rem;
+      text-align: center;
+      font-size: .14rem;
+
+    }
+
+    &__btnCancel {
+      margin: 0 .12rem 0 .6rem;
+      color: #0091FF;
+    }
+
+    &__btnConfirm {
+      margin: 0 .6rem 0 .12rem;
+      color: #FFFFFF;
+      background-color: #4FB0F9;
+    }
   }
 }
 </style>
