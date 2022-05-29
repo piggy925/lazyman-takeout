@@ -66,6 +66,7 @@ export default createStore({
       }
       setLocalCartList(state);
     },
+
     changeShopName(state, payload) {
       const {
         shopId,
@@ -75,6 +76,10 @@ export default createStore({
       shopInfo.shopName = shopName;
       state.cartList[shopId] = shopInfo;
       setLocalCartList(state);
+    },
+
+    clearCartList(state, shopId) {
+      state.cartList[shopId].productList = {};
     },
   },
   actions: {},

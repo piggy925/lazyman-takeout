@@ -1,33 +1,73 @@
 <template>
   <div class="order">
     <div class="order__price">实付金额 <b>¥{{ calculations.price }}</b></div>
-    <div class="order__btn">提交订单</div>
+    <div class="order__btn" @click="handleSubmitOrder">提交订单</div>
   </div>
-  <div class="mask">
+  <div class="mask" v-if="showMask">
     <div class="mask__content">
       <h3 class="mask__content__title">确认前往支付？</h3>
       <p class="mask__content__desc">请尽快完成支付，否则将被取消</p>
       <div class="mask__content__btns">
-        <div class="mask__content__btnCancel">取消订单</div>
-        <div class="mask__content__btnConfirm">确认支付</div>
+        <div class="mask__content__btnCancel" @click="handleConfirmOrder(true)">取消订单</div>
+        <div class="mask__content__btnConfirm" @click="handleConfirmOrder(false)">确认支付</div>
       </div>
     </div>
   </div>
 </template>
 
 <script>
-import { useRoute } from 'vue-router';
+import { useRoute, useRouter } from 'vue-router';
 import { useCommonCartEffect } from '@/effects/cartEffects';
+import { post } from '@/utils/request'
+import { useStore } from 'vuex';
+import { ref } from 'vue';
 
 export default {
   name: 'Order',
   setup() {
+    const router = useRouter();
     const route = useRoute();
+    const store = useStore();
     const shopId = route.params.id;
-    const { calculations } = useCommonCartEffect(shopId);
+    const { calculations, shopName, productList } = useCommonCartEffect(shopId);
+    const showMask = ref(false);
+
+    const handleSubmitOrder = () => {
+      showMask.value = true;
+    };
+
+    const handleConfirmOrder = async (isCanceled) => {
+      const products = [];
+      for (let i in productList.value) {
+        let product = productList.value[i];
+        products.push({ id: parseInt(product._id, 10), num: product.count });
+      }
+
+      try {
+        const result = await post('/api/order', {
+          addressId: 1,
+          shopId,
+          shopName: shopName.value,
+          isCanceled,
+          products
+        });
+
+        showMask.value = false;
+        if (result?.errno === 0) {
+          if (!isCanceled) {
+            store.commit('clearCartList', shopId);
+          }
+          router.push({ name: 'Home' })
+        }
+      } catch (e) {
+        console.log('/api/order Request Fail');
+        // 弹窗提示请求失败
+      }
+    };
 
     return {
-      calculations
+      calculations, showMask,
+      handleConfirmOrder, handleSubmitOrder
     }
   }
 }
