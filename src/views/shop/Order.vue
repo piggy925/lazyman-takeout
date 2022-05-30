@@ -1,10 +1,12 @@
 <template>
   <div class="order">
     <div class="order__price">实付金额 <b>¥{{ calculations.price }}</b></div>
-    <div class="order__btn" @click="handleSubmitOrder">提交订单</div>
+    <div class="order__btn" @click="handleSubmitOrder(true)">提交订单</div>
   </div>
-  <div class="mask" v-if="showMask">
-    <div class="mask__content">
+  <div class="mask"
+       v-if="showMask"
+       @click="handleSubmitOrder(false)">
+    <div class="mask__content" @click.stop>
       <h3 class="mask__content__title">确认前往支付？</h3>
       <p class="mask__content__desc">请尽快完成支付，否则将被取消</p>
       <div class="mask__content__btns">
@@ -32,8 +34,8 @@ export default {
     const { calculations, shopName, productList } = useCommonCartEffect(shopId);
     const showMask = ref(false);
 
-    const handleSubmitOrder = () => {
-      showMask.value = true;
+    const handleSubmitOrder = (status) => {
+      showMask.value = status;
     };
 
     const handleConfirmOrder = async (isCanceled) => {

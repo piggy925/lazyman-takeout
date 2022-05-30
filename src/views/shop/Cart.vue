@@ -52,7 +52,8 @@
       <div class="check__info">
         总计: <span class="check__info__price">&yen;{{ calculations.price }}</span>
       </div>
-      <div class="check__btn" @click="handleCheckClick">去结算</div>
+      <div :class="{'check__btn': true, 'check__btn--activate': calculations.total > 0 }"
+           @click="handleCheckClick">去结算</div>
       </div>
     </div>
 </template>
@@ -147,7 +148,7 @@ export default {
 @import "../../style/mixins";
 
 .cart {
-  position: absolute;
+  position: fixed;
   left: 0;
   right: 0;
   bottom: 0;
@@ -338,8 +339,12 @@ export default {
     width: .98rem;
     text-align: center;
     font-size: .14rem;
-    background: $check-btnColor;
+    background: $search-fontColor;
     color: $default-fontColor;
+
+    &--activate {
+      background: $check-btnColor;
+    }
   }
 }
 </style>
