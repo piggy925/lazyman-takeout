@@ -7,37 +7,37 @@
 + 纯前端项目：使用 [fast-mock](https://www.fastmock.site/#/) 模拟后端 API 返回数据
 + 部分页面由于比较重复，所以并未实现，可根据提供的标注设计稿自己实现
 
-### 实际效果
+### 页面展示
 
 以下为 iphone 13 pro 上的显示效果，不同设备的显示效果可能略有不同
 
 + 首页
 
-<img src="https://blog.caowei.xyz/blog/202206011610310.PNG" alt="IMG_4884" style="zoom: 25%;" />
+<img src="./doc/image/首页.PNG" style="zoom: 15%;" />
 
-+   店铺主页
++ 店铺主页
 
-<img src="https://blog.caowei.xyz/blog/202206011612240.PNG" alt="IMG_4885" style="zoom:25%;" />
+<img src="./doc/image/店铺首页.PNG"  style="zoom: 15%;" />
 
-+   购物车
++ 购物车
 
-<img src="https://blog.caowei.xyz/blog/202206011612865.PNG" alt="IMG_4886" style="zoom:25%;" />
+<img src="./doc/image/购物车.PNG" style="zoom: 15%;" />
 
-+   确认订单
++ 确认订单
 
-<img src="https://blog.caowei.xyz/blog/202206011613172.PNG" alt="IMG_4887" style="zoom:25%;" />
+<img src="./doc/image/确认订单页.PNG" style="zoom: 15%;" />
 
-+   订单页
++ 订单页
 
-<img src="https://blog.caowei.xyz/blog/202206011614340.PNG" alt="IMG_4889" style="zoom:25%;" />
+<img src="./doc/image/订单页.PNG" style="zoom: 15%;" />
 
-+   登录页
++ 登录页
 
-<img src="https://blog.caowei.xyz/blog/202206011627116.PNG" alt="IMG_4892" style="zoom:25%;" />
+<img src="./doc/image/登录页.PNG" style="zoom: 15%;" />
 
-+   注册页
++ 注册页
 
-<img src="https://blog.caowei.xyz/blog/202206011628135.PNG" alt="IMG_4893" style="zoom:25%;" />
+<img src="./doc/image/注册页.PNG" style="zoom: 15%;" />
 
 ### 如何运行
 
