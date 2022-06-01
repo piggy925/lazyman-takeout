@@ -48,7 +48,7 @@ export default {
 
   &__header {
     position: relative;
-    padding-top: .26rem;
+    padding-top: .15rem;
     line-height: .24rem;
     color: $default-fontColor;
     text-align: center;

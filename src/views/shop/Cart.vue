@@ -30,13 +30,13 @@
                 <span class="product__item__origin">&yen;{{ item.oldPrice }}</span>
               </p>
               <div class="product__count">
-                <span class="product__count__minus"
-                      @click="changeCartItem(shopId, item._id, item, -1)">-</span>
-                <span class="product__count__num">
+                <span class="product__count__minus iconfont"
+                      @click="changeCartItem(shopId, item._id, item, -1)">&#xe677;</span>
+                <span class="product__count__num iconfont">
                   {{ item.count || 0 }}
                 </span>
-                <span class="product__count__plus"
-                      @click="changeCartItem(shopId, item._id, item, 1)">+</span>
+                <span class="product__count__plus iconfont"
+                      @click="changeCartItem(shopId, item._id, item, 1)">&#xe781;</span>
               </div>
             </div>
         </div>
@@ -261,8 +261,11 @@ export default {
 
     &__num {
       display: inline-block;
-      width: .18rem;
+      width: .2rem;
+      line-height: .22rem;
       text-align: center;
+      vertical-align: text-bottom;
+      font-size: .14rem;
     }
 
     &__minus, &__plus {
@@ -270,20 +273,16 @@ export default {
       width: .2rem;
       height: .2rem;
       text-align: center;
-      border-radius: 50%;
       font-size: .2rem;
-      line-height: .16rem;
-      color: #666
     }
 
     &__minus {
-      border: .01rem solid #666;
+      color: #666;
       margin-right: .05rem;
     }
 
     &__plus {
-      background: $default-btnColor;
-      color: $default-fontColor;
+      color: $default-btnColor;
       margin-left: .05rem;
     }
   }
